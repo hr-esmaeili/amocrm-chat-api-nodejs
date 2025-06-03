@@ -1,0 +1,3204 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Chats API",
+    "version": "unknown"
+  },
+  "servers": [
+    {
+      "url": "https://amojo.kommo.com/v2/origin/custom/"
+    }
+  ],
+  "components": {
+    "securitySchemes": {}
+  },
+  "security": [
+    {}
+  ],
+  "paths": {
+    "/{channel_id}/connect": {
+      "post": {
+        "summary": "Step 2: Connect chat channel",
+        "description": "",
+        "operationId": "connect-channel",
+        "parameters": [
+          {
+            "name": "channel_id",
+            "in": "path",
+            "description": "Get it from Step 1",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string",
+                    "description": "amojo_id that you get in Step 1"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Bot name"
+                  },
+                  "hook_api_version": {
+                    "type": "string",
+                    "description": "The Chat API version",
+                    "enum": [
+                      "v2"
+                    ]
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string",
+                    "description": "amojo_id that you get in Step 1"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Bot name"
+                  },
+                  "hook_api_version": {
+                    "type": "string",
+                    "description": "The Chat API version",
+                    "enum": [
+                      "v2"
+                    ]
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string",
+                    "description": "amojo_id that you get in Step 1"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Bot name"
+                  },
+                  "hook_api_version": {
+                    "type": "string",
+                    "description": "The Chat API version",
+                    "enum": [
+                      "v2"
+                    ]
+                  }
+                }
+              }
+            },
+            "application/hal+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string",
+                    "description": "amojo_id that you get in Step 1"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Bot name"
+                  },
+                  "hook_api_version": {
+                    "type": "string",
+                    "description": "The Chat API version",
+                    "enum": [
+                      "v2"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Request Example": {
+                  "value": {
+                    "account_id": "52fd2a28-d2eb-4bd8-b862-a67934927b38",
+                    "title": "MyKommo",
+                    "hook_api_version": "v2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n   \"account_id\": \"52fd2a28-d2eb-4bd8-b862-b57934927b38\",\n   \"scope_id\": \"f62a0162-46a7-430e-b06c-0ef798d56b21_52fd2a28-d2eb-4bd8-b862-b57934927b38\",\n   \"title\": \"MyKommo\",\n   \"hook_api_version\": \"v2\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "account_id": {
+                      "type": "string",
+                      "example": "52fd2a28-d2eb-4bd8-b862-b57934927b38"
+                    },
+                    "scope_id": {
+                      "type": "string",
+                      "example": "f62a0162-46a7-430e-b06c-0ef798d56b21_52fd2a28-d2eb-4bd8-b862-b57934927b38"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "MyKommo"
+                    },
+                    "hook_api_version": {
+                      "type": "string",
+                      "example": "v2"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/{scope_id}/chats": {
+      "post": {
+        "summary": "Step 3: Create new chat",
+        "description": "This method allows you to create a chat before sending the first message.",
+        "operationId": "create-chat",
+        "parameters": [
+          {
+            "name": "Date",
+            "in": "header",
+            "description": "Date and time when the request was generated. The signature will be valid for 15 minutes from this Date. The date should be in the format “Thu, 01 Jan 2023 12:00:00 +0000” (RFC2822)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-type",
+            "in": "header",
+            "description": "Request data type. Currently, only application/json is supported.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "application/json"
+              ],
+              "default": "application/json"
+            }
+          },
+          {
+            "name": "Content-MD5",
+            "in": "header",
+            "description": "For the request body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "Signature of the request as a string.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope_id",
+            "in": "path",
+            "description": "You got the scope_id as a part of response in Step 2",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "conversation_id"
+                ],
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side (your integration should generate it, it can be a phone number, a username)"
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "external_id": {
+                        "type": "string",
+                        "description": "Identifier of the chat source on the integration side. If you do not need to specify the source, then the source field does not need to be passed."
+                      }
+                    }
+                  },
+                  "user": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Chat participant ID on the integration side ( you generate the ID)"
+                      },
+                      "ref_id": {
+                        "type": "string",
+                        "description": "Chat participant ID on the Kommo side"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Chat participant name"
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "description": "Url to the chat participant avatar, Url should be available for download"
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "phone": {
+                            "type": "string",
+                            "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "profile_link": {
+                    "type": "string",
+                    "description": "Url to the chat participant profile"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "conversation_id"
+                ],
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side (your integration should generate it, it can be a phone number, a username)"
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "external_id": {
+                        "type": "string",
+                        "description": "Identifier of the chat source on the integration side. If you do not need to specify the source, then the source field does not need to be passed."
+                      }
+                    }
+                  },
+                  "user": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Chat participant ID on the integration side ( you generate the ID)"
+                      },
+                      "ref_id": {
+                        "type": "string",
+                        "description": "Chat participant ID on the Kommo side"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Chat participant name"
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "description": "Url to the chat participant avatar, Url should be available for download"
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "phone": {
+                            "type": "string",
+                            "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "profile_link": {
+                    "type": "string",
+                    "description": "Url to the chat participant profile"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "conversation_id"
+                ],
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side (your integration should generate it, it can be a phone number, a username)"
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "external_id": {
+                        "type": "string",
+                        "description": "Identifier of the chat source on the integration side. If you do not need to specify the source, then the source field does not need to be passed."
+                      }
+                    }
+                  },
+                  "user": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Chat participant ID on the integration side ( you generate the ID)"
+                      },
+                      "ref_id": {
+                        "type": "string",
+                        "description": "Chat participant ID on the Kommo side"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Chat participant name"
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "description": "Url to the chat participant avatar, Url should be available for download"
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "phone": {
+                            "type": "string",
+                            "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "profile_link": {
+                    "type": "string",
+                    "description": "Url to the chat participant profile"
+                  }
+                }
+              }
+            },
+            "application/hal+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "conversation_id"
+                ],
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side (your integration should generate it, it can be a phone number, a username)"
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "external_id": {
+                        "type": "string",
+                        "description": "Identifier of the chat source on the integration side. If you do not need to specify the source, then the source field does not need to be passed."
+                      }
+                    }
+                  },
+                  "user": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Chat participant ID on the integration side ( you generate the ID)"
+                      },
+                      "ref_id": {
+                        "type": "string",
+                        "description": "Chat participant ID on the Kommo side"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Chat participant name"
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "description": "Url to the chat participant avatar, Url should be available for download"
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "phone": {
+                            "type": "string",
+                            "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "profile_link": {
+                    "type": "string",
+                    "description": "Url to the chat participant profile"
+                  }
+                }
+              },
+              "examples": {
+                "Request Example": {
+                  "value": {
+                    "conversation_id": "XXXXXXXX-49af-4448-a2c6-d5a421f7f301",
+                    "user": {
+                      "id": "XXXXX-1376265f-86df-4c49-a0c3-a4816df41af0",
+                      "avatar": "https://www.example.com/users/avatar.png",
+                      "name": "Client",
+                      "profile": {
+                        "phone": "+1234567890",
+                        "email": "client409@example.com"
+                      },
+                      "profile_link": "https://example.com/profile/client409"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Chat created successfully": {
+                    "value": "{\n   \"id\": \"XXXXXXX-10e9-4f88-af0b-6581795e15e2\",\n   \"user\": {\n       \"id\": \"XXXXXXX-7bd3-4934-b05f-23f1db1a6514\",\n       \"client_id\": \"XXXXXXX-86df-4c49-a0c3-a4816df41af0\",\n       \"name\": \"Client\",\n       \"avatar\": \"https://www.example.com/users/avatar.png\",\n       \"phone\": \"+1234567890\",\n       \"email\": \"client409@example.com\"\n   }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "XXXXXXX-10e9-4f88-af0b-6581795e15e2"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "XXXXXXX-7bd3-4934-b05f-23f1db1a6514"
+                        },
+                        "client_id": {
+                          "type": "string",
+                          "example": "XXXXXXX-86df-4c49-a0c3-a4816df41af0"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Client"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://www.example.com/users/avatar.png"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "example": "+1234567890"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "client409@example.com"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid data was given. Details are available in the response": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Incorrect request signature": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Channel does not exist": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/{scope_id}": {
+      "post": {
+        "summary": "Step 5: Send, receive, or import messages",
+        "description": "",
+        "operationId": "send-import-messages",
+        "parameters": [
+          {
+            "name": "Date",
+            "in": "header",
+            "description": "Date and time when the request was generated. The signature will be valid for 15 minutes from this Date. The date should be in the format “Thu, 01 Jan 2023 12:00:00 +0000” (RFC2822)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-type",
+            "in": "header",
+            "description": "Request data type. Currently, only application/json is supported.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-MD5",
+            "in": "header",
+            "description": "For the request body, it is necessary to calculate the MD5 hash and indicate it in the header in lowercase. At the same time, it is important to keep in mind that the request body is calculated as a stream of bytes without considering the end of JSON markup, and if there are “\\n” or spaces at the end, they will also be taken into account",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "Signature of the request as a string. It is formed from the name of the method (GET/POST) in uppercase, with the values of the headers concatenated by “\\n”. Header values ​​come in a specific order. If there is no header, an empty string is specified instead. Next, add the requested path from the URL without the protocol and domain (without GET parameters) to the line. The resulting string is calculated using HMAC-SHA1, and as a secret, we use the channel secret obtained during registration. The resulting hash in lowercase is indicated in the X-Signature header.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope_id",
+            "in": "path",
+            "description": "You obtain the scope ID in the response of step 2",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "object",
+                    "properties": {
+                      "event_type": {
+                        "type": "string",
+                        "description": "Event type, currently only new_message is supported",
+                        "default": "new_message",
+                        "enum": [
+                          "new_message"
+                        ]
+                      },
+                      "payload": {
+                        "type": "object",
+                        "description": "An array contains the elements of the message.",
+                        "required": [
+                          "timestamp",
+                          "msec_timestamp",
+                          "msgid",
+                          "conversation_id"
+                        ],
+                        "properties": {
+                          "timestamp": {
+                            "type": "integer",
+                            "description": "Message timestamp in Unix Timestamp format",
+                            "format": "int32"
+                          },
+                          "msec_timestamp": {
+                            "type": "integer",
+                            "description": "Message timestamp in milliseconds",
+                            "format": "int32"
+                          },
+                          "msgid": {
+                            "type": "string",
+                            "description": "Chat message ID on the integration side"
+                          },
+                          "conversation_id": {
+                            "type": "string",
+                            "description": "Chat ID on the integration side"
+                          },
+                          "conversation_ref_id": {
+                            "type": "string",
+                            "description": "Chat ID on Kommo side. It should be sent if the client responds to a message sent with “Write first” so the chat on your side is associated with the chat on the system."
+                          },
+                          "source": {
+                            "type": "object",
+                            "description": "Message source.",
+                            "properties": {
+                              "external_id": {
+                                "type": "string",
+                                "description": "Chat source identifier on the integration side. The field length is 40 characters, you can use any printable ascii characters and a space."
+                              }
+                            }
+                          },
+                          "sender": {
+                            "type": "object",
+                            "description": "Message sender",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the integration side"
+                              },
+                              "ref_id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the Chat API side"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Chat participant name"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "description": "Link to the chat participant’s avatar. The link must be available to third-party resources and provide an image for download"
+                              },
+                              "profile_link": {
+                                "type": "string",
+                                "description": "Link to the profile of the chat participant in a third-party chat system"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "description": "Chat participant profile.",
+                                "properties": {
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "receiver": {
+                            "type": "object",
+                            "description": "Message receiver",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the integration side"
+                              },
+                              "ref_id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the Chat API side"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Chat participant name"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "description": "Link to the chat participant’s avatar. The link must be available to third-party resources and provide an image for download"
+                              },
+                              "profile_link": {
+                                "type": "string",
+                                "description": "Link to the profile of the chat participant in a third-party chat system"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "description": "Chat participant profile.",
+                                "properties": {
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "message": {
+                            "type": "object",
+                            "description": "An array contains the message components.",
+                            "required": [
+                              "type"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "description": "Message type, one of the following: text, contact, file, video, picture, voice, audio, sticker, location"
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "The field is mandatory for the “text” type, can be empty for other types"
+                              },
+                              "media": {
+                                "type": "string",
+                                "description": "Url to the file, video, picture, voice, audio, or sticker. Url should be available for download"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "description": "The size of the file from the “media” field (Optional)",
+                                "format": "int32"
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "description": "The name of the file from the “media” field url, the field is optional. Ignored for the “voice” type"
+                              },
+                              "contact": {
+                                "type": "object",
+                                "description": "Mandatory fields for messages of type contact (contact information).",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Contact name"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Contact phone"
+                                  }
+                                }
+                              },
+                              "location": {
+                                "type": "object",
+                                "description": "Mandatory fields for messages of type location (geoposition).",
+                                "properties": {
+                                  "lon": {
+                                    "type": "number",
+                                    "description": "Longitude",
+                                    "format": "float"
+                                  },
+                                  "lat": {
+                                    "type": "number",
+                                    "description": "Latitude",
+                                    "format": "float"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "silent": {
+                            "type": "boolean",
+                            "description": "Defines whether the message triggers a notification in the Kommo account"
+                          },
+                          "reply_to": {
+                            "type": "object",
+                            "description": "The object of the embedded message. The message from a quote with a reply can only belong to the same chat as the message being sent.",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "The ID of the quoted message in the Chats API. If passed, the remaining fields do not need to be filled in, they will be determined automatically. In case of passing the ID, scrolling to the message will also work if the chat is in the same card."
+                              },
+                              "msgid": {
+                                "type": "string",
+                                "description": "The ID of the quoted message on the integration side. If passed, the remaining fields do not need to be filled in, they will be determined automatically. In case of passing the ID, scrolling to the message will also work if the chat is in the same card."
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Mandatory if no ID is passed. Message type can be one of the following: text, contact, file, video, picture, voice, audio, sticker, location."
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "Mandatory for the \"text\" type if no ID is passed. For other message types, this can be empty."
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "description": "Optional. File name"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "description": "Optional. File size in bytes",
+                                "format": "int32"
+                              },
+                              "media_duration": {
+                                "type": "integer",
+                                "description": "Optional. Duration for video/audio/voice messages",
+                                "format": "int32"
+                              },
+                              "location": {
+                                "type": "object",
+                                "description": "Mandatory for location type messages if no ID is passed.",
+                                "properties": {
+                                  "lon": {
+                                    "type": "number",
+                                    "description": "Longitude",
+                                    "format": "float"
+                                  },
+                                  "lat": {
+                                    "type": "number",
+                                    "description": "Latitude",
+                                    "format": "float"
+                                  }
+                                }
+                              },
+                              "sender": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "description": "Sender ID on the integration side, if passed, the remaining fields do not need to be filled in, they will be determined automatically."
+                                  },
+                                  "ref_id": {
+                                    "type": "string",
+                                    "description": "Sender ID in the Chats API, if passed, the remaining fields do not need to be filled in, they will be determined automatically."
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Mandatory if no ID is passed. Sender name"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "object",
+                    "properties": {
+                      "event_type": {
+                        "type": "string",
+                        "description": "Event type, currently only new_message is supported",
+                        "default": "new_message",
+                        "enum": [
+                          "new_message"
+                        ]
+                      },
+                      "payload": {
+                        "type": "object",
+                        "description": "An array contains the elements of the message.",
+                        "required": [
+                          "timestamp",
+                          "msec_timestamp",
+                          "msgid",
+                          "conversation_id"
+                        ],
+                        "properties": {
+                          "timestamp": {
+                            "type": "integer",
+                            "description": "Message timestamp in Unix Timestamp format",
+                            "format": "int32"
+                          },
+                          "msec_timestamp": {
+                            "type": "integer",
+                            "description": "Message timestamp in milliseconds",
+                            "format": "int32"
+                          },
+                          "msgid": {
+                            "type": "string",
+                            "description": "Chat message ID on the integration side"
+                          },
+                          "conversation_id": {
+                            "type": "string",
+                            "description": "Chat ID on the integration side"
+                          },
+                          "conversation_ref_id": {
+                            "type": "string",
+                            "description": "Chat ID on Kommo side. It should be sent if the client responds to a message sent with “Write first” so the chat on your side is associated with the chat on the system."
+                          },
+                          "source": {
+                            "type": "object",
+                            "description": "Message source.",
+                            "properties": {
+                              "external_id": {
+                                "type": "string",
+                                "description": "Chat source identifier on the integration side. The field length is 40 characters, you can use any printable ascii characters and a space."
+                              }
+                            }
+                          },
+                          "sender": {
+                            "type": "object",
+                            "description": "Message sender",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the integration side"
+                              },
+                              "ref_id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the Chat API side"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Chat participant name"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "description": "Link to the chat participant’s avatar. The link must be available to third-party resources and provide an image for download"
+                              },
+                              "profile_link": {
+                                "type": "string",
+                                "description": "Link to the profile of the chat participant in a third-party chat system"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "description": "Chat participant profile.",
+                                "properties": {
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "receiver": {
+                            "type": "object",
+                            "description": "Message receiver",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the integration side"
+                              },
+                              "ref_id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the Chat API side"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Chat participant name"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "description": "Link to the chat participant’s avatar. The link must be available to third-party resources and provide an image for download"
+                              },
+                              "profile_link": {
+                                "type": "string",
+                                "description": "Link to the profile of the chat participant in a third-party chat system"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "description": "Chat participant profile.",
+                                "properties": {
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "message": {
+                            "type": "object",
+                            "description": "An array contains the message components.",
+                            "required": [
+                              "type"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "description": "Message type, one of the following: text, contact, file, video, picture, voice, audio, sticker, location"
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "The field is mandatory for the “text” type, can be empty for other types"
+                              },
+                              "media": {
+                                "type": "string",
+                                "description": "Url to the file, video, picture, voice, audio, or sticker. Url should be available for download"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "description": "The size of the file from the “media” field (Optional)",
+                                "format": "int32"
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "description": "The name of the file from the “media” field url, the field is optional. Ignored for the “voice” type"
+                              },
+                              "contact": {
+                                "type": "object",
+                                "description": "Mandatory fields for messages of type contact (contact information).",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Contact name"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Contact phone"
+                                  }
+                                }
+                              },
+                              "location": {
+                                "type": "object",
+                                "description": "Mandatory fields for messages of type location (geoposition).",
+                                "properties": {
+                                  "lon": {
+                                    "type": "number",
+                                    "description": "Longitude",
+                                    "format": "float"
+                                  },
+                                  "lat": {
+                                    "type": "number",
+                                    "description": "Latitude",
+                                    "format": "float"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "silent": {
+                            "type": "boolean",
+                            "description": "Defines whether the message triggers a notification in the Kommo account"
+                          },
+                          "reply_to": {
+                            "type": "object",
+                            "description": "The object of the embedded message. The message from a quote with a reply can only belong to the same chat as the message being sent.",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "The ID of the quoted message in the Chats API. If passed, the remaining fields do not need to be filled in, they will be determined automatically. In case of passing the ID, scrolling to the message will also work if the chat is in the same card."
+                              },
+                              "msgid": {
+                                "type": "string",
+                                "description": "The ID of the quoted message on the integration side. If passed, the remaining fields do not need to be filled in, they will be determined automatically. In case of passing the ID, scrolling to the message will also work if the chat is in the same card."
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Mandatory if no ID is passed. Message type can be one of the following: text, contact, file, video, picture, voice, audio, sticker, location."
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "Mandatory for the \"text\" type if no ID is passed. For other message types, this can be empty."
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "description": "Optional. File name"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "description": "Optional. File size in bytes",
+                                "format": "int32"
+                              },
+                              "media_duration": {
+                                "type": "integer",
+                                "description": "Optional. Duration for video/audio/voice messages",
+                                "format": "int32"
+                              },
+                              "location": {
+                                "type": "object",
+                                "description": "Mandatory for location type messages if no ID is passed.",
+                                "properties": {
+                                  "lon": {
+                                    "type": "number",
+                                    "description": "Longitude",
+                                    "format": "float"
+                                  },
+                                  "lat": {
+                                    "type": "number",
+                                    "description": "Latitude",
+                                    "format": "float"
+                                  }
+                                }
+                              },
+                              "sender": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "description": "Sender ID on the integration side, if passed, the remaining fields do not need to be filled in, they will be determined automatically."
+                                  },
+                                  "ref_id": {
+                                    "type": "string",
+                                    "description": "Sender ID in the Chats API, if passed, the remaining fields do not need to be filled in, they will be determined automatically."
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Mandatory if no ID is passed. Sender name"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "object",
+                    "properties": {
+                      "event_type": {
+                        "type": "string",
+                        "description": "Event type, currently only new_message is supported",
+                        "default": "new_message",
+                        "enum": [
+                          "new_message"
+                        ]
+                      },
+                      "payload": {
+                        "type": "object",
+                        "description": "An array contains the elements of the message.",
+                        "required": [
+                          "timestamp",
+                          "msec_timestamp",
+                          "msgid",
+                          "conversation_id"
+                        ],
+                        "properties": {
+                          "timestamp": {
+                            "type": "integer",
+                            "description": "Message timestamp in Unix Timestamp format",
+                            "format": "int32"
+                          },
+                          "msec_timestamp": {
+                            "type": "integer",
+                            "description": "Message timestamp in milliseconds",
+                            "format": "int32"
+                          },
+                          "msgid": {
+                            "type": "string",
+                            "description": "Chat message ID on the integration side"
+                          },
+                          "conversation_id": {
+                            "type": "string",
+                            "description": "Chat ID on the integration side"
+                          },
+                          "conversation_ref_id": {
+                            "type": "string",
+                            "description": "Chat ID on Kommo side. It should be sent if the client responds to a message sent with “Write first” so the chat on your side is associated with the chat on the system."
+                          },
+                          "source": {
+                            "type": "object",
+                            "description": "Message source.",
+                            "properties": {
+                              "external_id": {
+                                "type": "string",
+                                "description": "Chat source identifier on the integration side. The field length is 40 characters, you can use any printable ascii characters and a space."
+                              }
+                            }
+                          },
+                          "sender": {
+                            "type": "object",
+                            "description": "Message sender",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the integration side"
+                              },
+                              "ref_id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the Chat API side"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Chat participant name"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "description": "Link to the chat participant’s avatar. The link must be available to third-party resources and provide an image for download"
+                              },
+                              "profile_link": {
+                                "type": "string",
+                                "description": "Link to the profile of the chat participant in a third-party chat system"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "description": "Chat participant profile.",
+                                "properties": {
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "receiver": {
+                            "type": "object",
+                            "description": "Message receiver",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the integration side"
+                              },
+                              "ref_id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the Chat API side"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Chat participant name"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "description": "Link to the chat participant’s avatar. The link must be available to third-party resources and provide an image for download"
+                              },
+                              "profile_link": {
+                                "type": "string",
+                                "description": "Link to the profile of the chat participant in a third-party chat system"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "description": "Chat participant profile.",
+                                "properties": {
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "message": {
+                            "type": "object",
+                            "description": "An array contains the message components.",
+                            "required": [
+                              "type"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "description": "Message type, one of the following: text, contact, file, video, picture, voice, audio, sticker, location"
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "The field is mandatory for the “text” type, can be empty for other types"
+                              },
+                              "media": {
+                                "type": "string",
+                                "description": "Url to the file, video, picture, voice, audio, or sticker. Url should be available for download"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "description": "The size of the file from the “media” field (Optional)",
+                                "format": "int32"
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "description": "The name of the file from the “media” field url, the field is optional. Ignored for the “voice” type"
+                              },
+                              "contact": {
+                                "type": "object",
+                                "description": "Mandatory fields for messages of type contact (contact information).",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Contact name"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Contact phone"
+                                  }
+                                }
+                              },
+                              "location": {
+                                "type": "object",
+                                "description": "Mandatory fields for messages of type location (geoposition).",
+                                "properties": {
+                                  "lon": {
+                                    "type": "number",
+                                    "description": "Longitude",
+                                    "format": "float"
+                                  },
+                                  "lat": {
+                                    "type": "number",
+                                    "description": "Latitude",
+                                    "format": "float"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "silent": {
+                            "type": "boolean",
+                            "description": "Defines whether the message triggers a notification in the Kommo account"
+                          },
+                          "reply_to": {
+                            "type": "object",
+                            "description": "The object of the embedded message. The message from a quote with a reply can only belong to the same chat as the message being sent.",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "The ID of the quoted message in the Chats API. If passed, the remaining fields do not need to be filled in, they will be determined automatically. In case of passing the ID, scrolling to the message will also work if the chat is in the same card."
+                              },
+                              "msgid": {
+                                "type": "string",
+                                "description": "The ID of the quoted message on the integration side. If passed, the remaining fields do not need to be filled in, they will be determined automatically. In case of passing the ID, scrolling to the message will also work if the chat is in the same card."
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Mandatory if no ID is passed. Message type can be one of the following: text, contact, file, video, picture, voice, audio, sticker, location."
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "Mandatory for the \"text\" type if no ID is passed. For other message types, this can be empty."
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "description": "Optional. File name"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "description": "Optional. File size in bytes",
+                                "format": "int32"
+                              },
+                              "media_duration": {
+                                "type": "integer",
+                                "description": "Optional. Duration for video/audio/voice messages",
+                                "format": "int32"
+                              },
+                              "location": {
+                                "type": "object",
+                                "description": "Mandatory for location type messages if no ID is passed.",
+                                "properties": {
+                                  "lon": {
+                                    "type": "number",
+                                    "description": "Longitude",
+                                    "format": "float"
+                                  },
+                                  "lat": {
+                                    "type": "number",
+                                    "description": "Latitude",
+                                    "format": "float"
+                                  }
+                                }
+                              },
+                              "sender": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "description": "Sender ID on the integration side, if passed, the remaining fields do not need to be filled in, they will be determined automatically."
+                                  },
+                                  "ref_id": {
+                                    "type": "string",
+                                    "description": "Sender ID in the Chats API, if passed, the remaining fields do not need to be filled in, they will be determined automatically."
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Mandatory if no ID is passed. Sender name"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "application/hal+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "object",
+                    "properties": {
+                      "event_type": {
+                        "type": "string",
+                        "description": "Event type, currently only new_message is supported",
+                        "default": "new_message",
+                        "enum": [
+                          "new_message"
+                        ]
+                      },
+                      "payload": {
+                        "type": "object",
+                        "description": "An array contains the elements of the message.",
+                        "required": [
+                          "timestamp",
+                          "msec_timestamp",
+                          "msgid",
+                          "conversation_id"
+                        ],
+                        "properties": {
+                          "timestamp": {
+                            "type": "integer",
+                            "description": "Message timestamp in Unix Timestamp format",
+                            "format": "int32"
+                          },
+                          "msec_timestamp": {
+                            "type": "integer",
+                            "description": "Message timestamp in milliseconds",
+                            "format": "int32"
+                          },
+                          "msgid": {
+                            "type": "string",
+                            "description": "Chat message ID on the integration side"
+                          },
+                          "conversation_id": {
+                            "type": "string",
+                            "description": "Chat ID on the integration side"
+                          },
+                          "conversation_ref_id": {
+                            "type": "string",
+                            "description": "Chat ID on Kommo side. It should be sent if the client responds to a message sent with “Write first” so the chat on your side is associated with the chat on the system."
+                          },
+                          "source": {
+                            "type": "object",
+                            "description": "Message source.",
+                            "properties": {
+                              "external_id": {
+                                "type": "string",
+                                "description": "Chat source identifier on the integration side. The field length is 40 characters, you can use any printable ascii characters and a space."
+                              }
+                            }
+                          },
+                          "sender": {
+                            "type": "object",
+                            "description": "Message sender",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the integration side"
+                              },
+                              "ref_id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the Chat API side"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Chat participant name"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "description": "Link to the chat participant’s avatar. The link must be available to third-party resources and provide an image for download"
+                              },
+                              "profile_link": {
+                                "type": "string",
+                                "description": "Link to the profile of the chat participant in a third-party chat system"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "description": "Chat participant profile.",
+                                "properties": {
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "receiver": {
+                            "type": "object",
+                            "description": "Message receiver",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the integration side"
+                              },
+                              "ref_id": {
+                                "type": "string",
+                                "description": "Chat participant ID on the Chat API side"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Chat participant name"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "description": "Link to the chat participant’s avatar. The link must be available to third-party resources and provide an image for download"
+                              },
+                              "profile_link": {
+                                "type": "string",
+                                "description": "Link to the profile of the chat participant in a third-party chat system"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "description": "Chat participant profile.",
+                                "properties": {
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Phone number. When creating an incoming lead, the phone number will be added to the contact data"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "description": "Email address. When creating an incoming lead, the email address will be added to the contact data"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "message": {
+                            "type": "object",
+                            "description": "An array contains the message components.",
+                            "required": [
+                              "type"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "description": "Message type, one of the following: text, contact, file, video, picture, voice, audio, sticker, location"
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "The field is mandatory for the “text” type, can be empty for other types"
+                              },
+                              "media": {
+                                "type": "string",
+                                "description": "Url to the file, video, picture, voice, audio, or sticker. Url should be available for download"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "description": "The size of the file from the “media” field (Optional)",
+                                "format": "int32"
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "description": "The name of the file from the “media” field url, the field is optional. Ignored for the “voice” type"
+                              },
+                              "contact": {
+                                "type": "object",
+                                "description": "Mandatory fields for messages of type contact (contact information).",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Contact name"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "description": "Contact phone"
+                                  }
+                                }
+                              },
+                              "location": {
+                                "type": "object",
+                                "description": "Mandatory fields for messages of type location (geoposition).",
+                                "properties": {
+                                  "lon": {
+                                    "type": "number",
+                                    "description": "Longitude",
+                                    "format": "float"
+                                  },
+                                  "lat": {
+                                    "type": "number",
+                                    "description": "Latitude",
+                                    "format": "float"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "silent": {
+                            "type": "boolean",
+                            "description": "Defines whether the message triggers a notification in the Kommo account"
+                          },
+                          "reply_to": {
+                            "type": "object",
+                            "description": "The object of the embedded message. The message from a quote with a reply can only belong to the same chat as the message being sent.",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "The ID of the quoted message in the Chats API. If passed, the remaining fields do not need to be filled in, they will be determined automatically. In case of passing the ID, scrolling to the message will also work if the chat is in the same card."
+                              },
+                              "msgid": {
+                                "type": "string",
+                                "description": "The ID of the quoted message on the integration side. If passed, the remaining fields do not need to be filled in, they will be determined automatically. In case of passing the ID, scrolling to the message will also work if the chat is in the same card."
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Mandatory if no ID is passed. Message type can be one of the following: text, contact, file, video, picture, voice, audio, sticker, location."
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "Mandatory for the \"text\" type if no ID is passed. For other message types, this can be empty."
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "description": "Optional. File name"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "description": "Optional. File size in bytes",
+                                "format": "int32"
+                              },
+                              "media_duration": {
+                                "type": "integer",
+                                "description": "Optional. Duration for video/audio/voice messages",
+                                "format": "int32"
+                              },
+                              "location": {
+                                "type": "object",
+                                "description": "Mandatory for location type messages if no ID is passed.",
+                                "properties": {
+                                  "lon": {
+                                    "type": "number",
+                                    "description": "Longitude",
+                                    "format": "float"
+                                  },
+                                  "lat": {
+                                    "type": "number",
+                                    "description": "Latitude",
+                                    "format": "float"
+                                  }
+                                }
+                              },
+                              "sender": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "description": "Sender ID on the integration side, if passed, the remaining fields do not need to be filled in, they will be determined automatically."
+                                  },
+                                  "ref_id": {
+                                    "type": "string",
+                                    "description": "Sender ID in the Chats API, if passed, the remaining fields do not need to be filled in, they will be determined automatically."
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Mandatory if no ID is passed. Sender name"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "An incoming message from a client": {
+                  "value": {
+                    "event_type": "new_message",
+                    "payload": {
+                      "timestamp": 1670420919,
+                      "msec_timestamp": 1670420919670,
+                      "msgid": "XXXXXX-0ec6-427b-b97c-883329acbe3d",
+                      "conversation_id": "XXXXXXX-80c5-403d-93d9-bada6302810d",
+                      "sender": {
+                        "id": "XXXXXXX-ec21-4463-965f-1fe1d4cd5a89",
+                        "avatar": "https://www.w3schools.com/w3images/avatar2.png",
+                        "profile": {
+                          "phone": "+1234567890"
+                        },
+                        "name": "Adam"
+                      },
+                      "message": {
+                        "type": "text",
+                        "text": "Hello Lily!"
+                      },
+                      "silent": false
+                    }
+                  }
+                },
+                "An outgoing message from a manager when we can identify the sender": {
+                  "value": {
+                    "event_type": "new_message",
+                    "payload": {
+                      "timestamp": 1670490330,
+                      "msec_timestamp": 1670490330161,
+                      "msgid": "f1065e3b-0ec6-427b-b97c-883329acbe3f",
+                      "conversation_id": "62ef74a4-80c5-403d-93d9-bada6302810d",
+                      "sender": {
+                        "id": "b0bc49f0-ec21-4463-965f-1fe1d4cd5a90",
+                        "name": "Lama",
+                        "ref_id": "76fc2bea-902f-425c-9a3d-dcdac4766090"
+                      },
+                      "receiver": {
+                        "id": "b0bc49f0-ec21-4463-965f-1fe1d4cd5a89",
+                        "avatar": "https://example.com/users/avatar.png",
+                        "name": "Adam",
+                        "profile": {
+                          "phone": "+18305803077",
+                          "email": "example.client@example.com"
+                        },
+                        "profile_link": "https://example.com/profile/example.client"
+                      },
+                      "message": {
+                        "type": "text",
+                        "text": "Hello from Kommo! It is Thursday already!"
+                      },
+                      "silent": true
+                    }
+                  }
+                },
+                "An outgoing message from a channel bot": {
+                  "value": {
+                    "event_type": "new_message",
+                    "payload": {
+                      "timestamp": 1670490330,
+                      "msec_timestamp": 1670490330161,
+                      "msgid": "f1065e3b-0ec6-427b-b97c-883329acbe3f",
+                      "conversation_id": "62ef74a4-80c5-403d-93d9-bada6302810d",
+                      "sender": {
+                        "id": "b0bc49f0-ec21-4463-965f-1fe1d4cd5100",
+                        "name": "Bot",
+                        "ref_id": "76fc2bea-902f-425c-9a3d-dcdac47660555"
+                      },
+                      "receiver": {
+                        "id": "b0bc49f0-ec21-4463-965f-1fe1d4cd5a89",
+                        "avatar": "https://example.com/users/avatar.png",
+                        "name": "Adam",
+                        "profile": {
+                          "phone": "+18305803077",
+                          "email": "example.client@example.com"
+                        },
+                        "profile_link": "https://example.com/profile/example.client"
+                      },
+                      "message": {
+                        "type": "text",
+                        "text": "Hello from our bot!"
+                      },
+                      "silent": true
+                    }
+                  }
+                },
+                "An outgoing message from a manager with media file": {
+                  "value": {
+                    "event_type": "new_message",
+                    "payload": {
+                      "timestamp": 1670420919,
+                      "msec_timestamp": 1670420919670,
+                      "msgid": "f1065e3b-0ec6-427b-b97c-883329acbe3d",
+                      "conversation_id": "62ef74a4-80c5-403d-93d9-bada6302810d",
+                      "sender": {
+                        "id": "b0bc49f0-ec21-4463-965f-1fe1d4cd5a90",
+                        "name": "Lama",
+                        "ref_id": "76fc2bea-902f-425c-9a3d-dcdac4766090"
+                      },
+                      "receiver": {
+                        "id": "b0bc49f0-ec21-4463-965f-1fe1d4cd5a89",
+                        "avatar": "https://example.com/users/avatar.png",
+                        "name": "Adam",
+                        "profile": {
+                          "phone": "+18305803077",
+                          "email": "example.client@example.com"
+                        },
+                        "profile_link": "https://example.com/profile/example.client"
+                      },
+                      "message": {
+                        "type": "file",
+                        "text": "Please find attached the offer file",
+                        "media": "https://www.kommo.com/static/assets/developers/files/examples/offer.pdf",
+                        "file_name": "offer"
+                      },
+                      "silent": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "The message is accepted for processing": {
+                    "value": "{\n    \"new_message\": {\n        \"conversation_id\": \"XXXXXXXXX-a27e-7ajfj39223edd\",\n        \"sender_id\": \"XXXXXXXXX-daw2332fw\",\n        \"msgid\": \"XXXXXXXXX-iw204is04\",\n        \"ref_id\": \"msgid1\"\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "new_message": {
+                      "type": "object",
+                      "properties": {
+                        "conversation_id": {
+                          "type": "string",
+                          "example": "XXXXXXXXX-a27e-7ajfj39223edd"
+                        },
+                        "sender_id": {
+                          "type": "string",
+                          "example": "XXXXXXXXX-daw2332fw"
+                        },
+                        "msgid": {
+                          "type": "string",
+                          "example": "XXXXXXXXX-iw204is04"
+                        },
+                        "ref_id": {
+                          "type": "string",
+                          "example": "msgid1"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid data was given. Details are available in the response.": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Incorrect request signature": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/{scope_id}/chats/{conversation_id}/history": {
+      "get": {
+        "summary": "Get chat history",
+        "description": "The method allows you to get a list of messages in a specific chat.",
+        "operationId": "chat-history",
+        "parameters": [
+          {
+            "name": "scope_id",
+            "in": "path",
+            "description": "Scope ID, it is specific to your integration",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "description": "conversation_id can be obtained either when creating a chat via the chat creation method, or from the message webhook.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset of the message selection (how many records from the beginning of the selection we skip)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of returned entities per query (Maximum – 50)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Date",
+            "in": "header",
+            "description": "Date and time when the request was generated. The signature will be valid for 15 minutes from this Date. The date should be in the format “Thu, 01 Jan 2023 12:00:00 +0000” (RFC2822)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-type",
+            "in": "header",
+            "description": "Request data type. Currently, only application/json is supported.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          },
+          {
+            "name": "Content-MD5",
+            "in": "header",
+            "description": "For the request body, it is necessary to calculate the MD5 hash and indicate it in the header in lowercase. At the same time, it is important to keep in mind that the request body is calculated as a stream of bytes without considering the end of JSON markup, and if there are “\\n” or spaces at the end, they will also be taken into account. For GET requests, MD5 must also be calculated. Even if nothing is passed in the request body, MD5 will be obtained from an empty string.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "Signature of the request as a string. It is formed from the name of the method (GET/POST) in uppercase, with the values of the headers concatenated by “\\n”. Header values ​​come in a specific order. If there is no header, an empty string is specified instead. Next, add the requested path from the URL without the protocol and domain (without GET parameters) to the line. The resulting string is calculated using HMAC-SHA1, and as a secret, we use the channel secret obtained during registration. The resulting hash in lowercase is indicated in the X-Signature header.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Request completed successfully": {
+                    "value": "{\n    \"messages\": [\n        {\n            \"timestamp\": 1670930693,\n            \"msec_timestamp\": 1670930693280,\n            \"sender\": {\n                \"id\": \"XXXXXX-ec21-4463-965f-1fe1d4cd5b89\",\n                \"name\": \"Harry Potter\",\n                \"avatar\": \"\"\n            },\n            \"receiver\": {\n                \"id\": \"XXXXXXX-a3ab-4695-832c-919dbfc598ea\",\n                \"client_id\": \"XXXXXXXXX-ec21-4463-965f-1fe1d4cd5a89\",\n                \"name\": \"Adam\",\n                \"avatar\": \"https://www.w3schools.com/w3images/avatar2.png\",\n                \"phone\": \"+1234567890\"\n            },\n            \"message\": {\n                \"id\": \"XXXXXXX-de79-468b-a923-9a7c88c733d7\",\n                \"type\": \"picture\",\n                \"text\": \"Hello from Kommo\",\n                \"media\": \"https://amojo.kommo.com/attachments/XXXXXXX-d2eb-4bd8-b862-a67934927b38/14723c64-c40d-4efc-9f78-9625adac414c/zDCRN_logo-min.jpg\",\n                \"thumbnail\": \"https://amojo.kommo.com/attachments/XXXXXXX-d2eb-4bd8-b862-a67934927b38/14723c64-c40d-4efc-9f78-9625adac414c/zDCRN_logo-min_320x200.jpg\",\n                \"file_name\": \"logo-min.png\",\n                \"file_size\": 27107\n            }\n        },\n        {\n            \"timestamp\": 1670832082,\n            \"msec_timestamp\": 1670832082680,\n            \"sender\": {\n                \"id\": \"XXXXXXX-a3ab-4695-832c-919dbfc598ea\",\n                \"client_id\": \"XXXXXX-ec21-4463-965f-1fe1d4cd5a89\",\n                \"name\": \"Adam\",\n                \"avatar\": \"https://www.w3schools.com/w3images/avatar2.png\",\n                \"phone\": \"+9876543210\"\n            },\n            \"message\": {\n                \"id\": \"XXXXXXX-a8b2-4a97-b7a9-7101ec25a74f\",\n                \"client_id\": \"XXXXXX-0ec6-427b-b97c-883329acbaaa\",\n                \"type\": \"text\",\n                \"text\": \"Hello Kommo! Have a productive week. \",\n                \"media\": \"\",\n                \"thumbnail\": \"\",\n                \"file_name\": \"\",\n                \"file_size\": 0\n            }\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "timestamp": {
+                            "type": "integer",
+                            "example": 1670930693,
+                            "default": 0
+                          },
+                          "msec_timestamp": {
+                            "type": "integer",
+                            "example": 1670930693280,
+                            "default": 0
+                          },
+                          "sender": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "XXXXXX-ec21-4463-965f-1fe1d4cd5b89"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Harry Potter"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "example": ""
+                              }
+                            }
+                          },
+                          "receiver": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "XXXXXXX-a3ab-4695-832c-919dbfc598ea"
+                              },
+                              "client_id": {
+                                "type": "string",
+                                "example": "XXXXXXXXX-ec21-4463-965f-1fe1d4cd5a89"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Adam"
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "example": "https://www.w3schools.com/w3images/avatar2.png"
+                              },
+                              "phone": {
+                                "type": "string",
+                                "example": "+1234567890"
+                              }
+                            }
+                          },
+                          "message": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "XXXXXXX-de79-468b-a923-9a7c88c733d7"
+                              },
+                              "type": {
+                                "type": "string",
+                                "example": "picture"
+                              },
+                              "text": {
+                                "type": "string",
+                                "example": "Hello from Kommo"
+                              },
+                              "media": {
+                                "type": "string",
+                                "example": "https://amojo.kommo.com/attachments/XXXXXXX-d2eb-4bd8-b862-a67934927b38/14723c64-c40d-4efc-9f78-9625adac414c/zDCRN_logo-min.jpg"
+                              },
+                              "thumbnail": {
+                                "type": "string",
+                                "example": "https://amojo.kommo.com/attachments/XXXXXXX-d2eb-4bd8-b862-a67934927b38/14723c64-c40d-4efc-9f78-9625adac414c/zDCRN_logo-min_320x200.jpg"
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "example": "logo-min.png"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "example": 27107,
+                                "default": 0
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "204",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Chat does not exist or there are no messages": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Incorrect data was passed. Details are available in the response.": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Request signature is incorrect": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/{scope_id}/{msgid}/delivery_status": {
+      "post": {
+        "summary": "Update message delivery status",
+        "description": "The method allows you to update the delivery status of a specific message.",
+        "operationId": "update-delivery-status",
+        "parameters": [
+          {
+            "name": "scope_id",
+            "in": "path",
+            "description": "You can obtain scope ID in the Step 2",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "msgid",
+            "in": "path",
+            "description": "Message ID",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Request data type. Currently, only application/json is supported.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "application/json"
+              ]
+            }
+          },
+          {
+            "name": "Date",
+            "in": "header",
+            "description": "Date and time when the request was generated. The signature will be valid for 15 minutes from this Date. The date should be in the format “Thu, 01 Jan 2023 12:00:00 +0000” (RFC2822)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-MD5",
+            "in": "header",
+            "description": "For the request body, it is necessary to calculate the MD5 hash and indicate it in the header in lowercase. At the same time, it is important to keep in mind that the request body is calculated as a stream of bytes without considering the end of JSON markup, and if there are “\\n” or spaces at the end, they will also be taken into account. For GET requests, MD5 must also be calculated. Even if nothing is passed in the request body, MD5 will be obtained from an empty string.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "Signature of the request as a string. It is formed from the name of the method (GET/POST) in uppercase, with the values of the headers concatenated by “\\n”. Header values ​​come in a specific order. If there is no header, an empty string is specified instead. Next, add the requested path from the URL without the protocol and domain (without GET parameters) to the line. The resulting string is calculated using HMAC-SHA1, and as a secret, we use the channel secret obtained during registration. The resulting hash in lowercase is indicated in the X-Signature header.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "object",
+                    "properties": {
+                      "msgid": {
+                        "type": "string",
+                        "description": "Message ID on Kommo side. You obtain it in the step 5. Must match the msgid in the method URL."
+                      },
+                      "delivery_status": {
+                        "type": "string",
+                        "enum": [
+                          "-",
+                          "1",
+                          "2",
+                          "-1"
+                        ]
+                      },
+                      "error_code": {
+                        "type": "string",
+                        "enum": [
+                          "901",
+                          "902",
+                          "903",
+                          "904",
+                          "905"
+                        ]
+                      },
+                      "error": {
+                        "type": "string",
+                        "description": "An error text will be displayed to the user. Don’t send in case of status not error."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "object",
+                    "properties": {
+                      "msgid": {
+                        "type": "string",
+                        "description": "Message ID on Kommo side. You obtain it in the step 5. Must match the msgid in the method URL."
+                      },
+                      "delivery_status": {
+                        "type": "string",
+                        "enum": [
+                          "-",
+                          "1",
+                          "2",
+                          "-1"
+                        ]
+                      },
+                      "error_code": {
+                        "type": "string",
+                        "enum": [
+                          "901",
+                          "902",
+                          "903",
+                          "904",
+                          "905"
+                        ]
+                      },
+                      "error": {
+                        "type": "string",
+                        "description": "An error text will be displayed to the user. Don’t send in case of status not error."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "object",
+                    "properties": {
+                      "msgid": {
+                        "type": "string",
+                        "description": "Message ID on Kommo side. You obtain it in the step 5. Must match the msgid in the method URL."
+                      },
+                      "delivery_status": {
+                        "type": "string",
+                        "enum": [
+                          "-",
+                          "1",
+                          "2",
+                          "-1"
+                        ]
+                      },
+                      "error_code": {
+                        "type": "string",
+                        "enum": [
+                          "901",
+                          "902",
+                          "903",
+                          "904",
+                          "905"
+                        ]
+                      },
+                      "error": {
+                        "type": "string",
+                        "description": "An error text will be displayed to the user. Don’t send in case of status not error."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "application/hal+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "object",
+                    "properties": {
+                      "msgid": {
+                        "type": "string",
+                        "description": "Message ID on Kommo side. You obtain it in the step 5. Must match the msgid in the method URL."
+                      },
+                      "delivery_status": {
+                        "type": "string",
+                        "enum": [
+                          "-",
+                          "1",
+                          "2",
+                          "-1"
+                        ]
+                      },
+                      "error_code": {
+                        "type": "string",
+                        "enum": [
+                          "901",
+                          "902",
+                          "903",
+                          "904",
+                          "905"
+                        ]
+                      },
+                      "error": {
+                        "type": "string",
+                        "description": "An error text will be displayed to the user. Don’t send in case of status not error."
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Request Example": {
+                  "value": {
+                    "msgid": "XXXXXX-2aa3-464c-b6e4-4386d0f8f3ca",
+                    "delivery_status": -1,
+                    "error_code": 905,
+                    "error": "An unknown error occurred"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Status updated successfully": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Incorrect data was transmitted. Details are available in the response.": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Request signature is incorrect": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Message does not exist": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/{scope_id}/typing": {
+      "post": {
+        "summary": "Transfer typing information",
+        "description": "The method provides transferring information that the client is currently typing something in the messenger. The information will be displayed in Kommo interface.",
+        "operationId": "typing-info",
+        "parameters": [
+          {
+            "name": "scope_id",
+            "in": "path",
+            "description": "Get the scope ID in the step 2",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Request data type. Currently, only application/json is supported.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "application/json"
+              ]
+            }
+          },
+          {
+            "name": "Date",
+            "in": "header",
+            "description": "Date and time when the request was generated. The signature will be valid for 15 minutes from this Date. The date should be in the format “Thu, 01 Jan 2023 12:00:00 +0000” (RFC2822)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-MD5",
+            "in": "header",
+            "description": "For the request body, it is necessary to calculate the MD5 hash and indicate it in the header in lowercase. At the same time, it is important to keep in mind that the request body is calculated as a stream of bytes without considering the end of JSON markup, and if there are “\\n” or spaces at the end, they will also be taken into account. For GET requests, MD5 must also be calculated. Even if nothing is passed in the request body, MD5 will be obtained from an empty string.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "Signature of the request as a string. It is formed from the name of the method (GET/POST) in uppercase, with the values of the headers concatenated by “\\n”. Header values ​​come in a specific order. If there is no header, an empty string is specified instead. Next, add the requested path from the URL without the protocol and domain (without GET parameters) to the line. The resulting string is calculated using HMAC-SHA1, and as a secret, we use the channel secret obtained during registration. The resulting hash in lowercase is indicated in the X-Signature header.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side"
+                  },
+                  "sender": {
+                    "type": "object",
+                    "description": "User ID on the integration side",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "User ID on the integration side"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side"
+                  },
+                  "sender": {
+                    "type": "object",
+                    "description": "User ID on the integration side",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "User ID on the integration side"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side"
+                  },
+                  "sender": {
+                    "type": "object",
+                    "description": "User ID on the integration side",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "User ID on the integration side"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "application/hal+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side"
+                  },
+                  "sender": {
+                    "type": "object",
+                    "description": "User ID on the integration side",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "User ID on the integration side"
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Request Example": {
+                  "value": {
+                    "conversation_id": "XXXXXX-80c5-403d-93d9-bada6302810f",
+                    "sender": {
+                      "id": "XXXXXXXX-4f66-46ff-b06f-d245fca1af0a"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Event accepted, the typing status appears": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Request signature is incorrect": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Incorrect data was passed. Details are available in the response.": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/{channel_id}/disconnect": {
+      "delete": {
+        "summary": "Disconnect chat channel",
+        "description": "After disconnecting the channel, you will stop receiving webhooks for outgoing messages.  The “initiate conversation” option will also be disabled in the lead card (upon the expiration of the UI/UX cache).",
+        "operationId": "disconnect-channel",
+        "parameters": [
+          {
+            "name": "Date",
+            "in": "header",
+            "description": "Date and time when the request was generated. The signature will be valid for 15 minutes from this Date. The date should be in the format “Thu, 01 Jan 2023 12:00:00 +0000” (RFC2822)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-type",
+            "in": "header",
+            "description": "Request data type. Currently, only application/json is supported.",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          },
+          {
+            "name": "Content-MD5",
+            "in": "header",
+            "description": "For the request body, it is necessary to calculate the MD5 hash and indicate it in the header in lowercase. At the same time, it is important to keep in mind that the request body is calculated as a stream of bytes without considering the end of JSON markup, and if there are “\\n” or spaces at the end, they will also be taken into account. For GET requests, MD5 must also be calculated. Even if nothing is passed in the request body, MD5 will be obtained from an empty string.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "Signature of the request as a string. It is formed from the name of the method (GET/POST) in uppercase, with the values of the headers concatenated by “\\n”. Header values ​​come in a specific order. If there is no header, an empty string is specified instead. Next, add the requested path from the URL without the protocol and domain (without GET parameters) to the line. The resulting string is calculated using HMAC-SHA1, and as a secret, we use the channel secret obtained during registration. The resulting hash in lowercase is indicated in the X-Signature header.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "channel_id",
+            "in": "path",
+            "description": "Channel ID",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string",
+                    "description": "amojo_id of the account"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string",
+                    "description": "amojo_id of the account"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string",
+                    "description": "amojo_id of the account"
+                  }
+                }
+              }
+            },
+            "application/hal+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string",
+                    "description": "amojo_id of the account"
+                  }
+                }
+              },
+              "examples": {
+                "Request Example": {
+                  "value": {
+                    "account_id": "XXXXXX-d2eb-4bd8-b862-a67934927b38"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Channel disconnected successfully": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid data given. Details are available in the response.": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Incorrect request signature": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Channel does not exist": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/{scope_id}/react": {
+      "post": {
+        "summary": "Send or withdraw reactions",
+        "description": "The method allows you to send or remove a reaction from a specific message.",
+        "operationId": "send-reactions",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Request data type. Currently, only application/json is supported.",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          },
+          {
+            "name": "Date",
+            "in": "header",
+            "description": "Date and time when the request was generated. The signature will be valid for 15 minutes from this Date. The date should be in the format “Thu, 01 Jan 2023 12:00:00 +0000” (RFC2822)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-MD5",
+            "in": "header",
+            "description": "For the request body, it is necessary to calculate the MD5 hash and indicate it in the header in lowercase. At the same time, it is important to keep in mind that the request body is calculated as a stream of bytes without considering the end of JSON markup, and if there are “\\n” or spaces at the end, they will also be taken into account. For GET requests, MD5 must also be calculated. Even if nothing is passed in the request body, MD5 will be obtained from an empty string.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "Signature of the request as a string. It is formed from the name of the method (GET/POST) in uppercase, with the values of the headers concatenated by “\\n”. Header values ​​come in a specific order. If there is no header, an empty string is specified instead. Next, add the requested path from the URL without the protocol and domain (without GET parameters) to the line. The resulting string is calculated using HMAC-SHA1, and as a secret, we use the channel secret obtained during registration. The resulting hash in lowercase is indicated in the X-Signature header.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope_id",
+            "in": "path",
+            "description": "Obtain scope ID in the step 2",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Message ID on the Kommo side. The field is required if the msgid field is not passed"
+                  },
+                  "msgid": {
+                    "type": "string",
+                    "description": "Message ID on the integration side. The field is required if the id field is not passed"
+                  },
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "ID of the user who has sent/removed the reaction on the integration side"
+                      },
+                      "ref_id": {
+                        "type": "string",
+                        "description": "ID of the user who has sent/removed the reaction on the Kommo side. Required field when entering a reaction by the user of Kommo"
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "Action type",
+                    "enum": [
+                      "react",
+                      "unreact"
+                    ]
+                  },
+                  "emoji": {
+                    "type": "string",
+                    "description": "Required field for the “react” type"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Message ID on the Kommo side. The field is required if the msgid field is not passed"
+                  },
+                  "msgid": {
+                    "type": "string",
+                    "description": "Message ID on the integration side. The field is required if the id field is not passed"
+                  },
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "ID of the user who has sent/removed the reaction on the integration side"
+                      },
+                      "ref_id": {
+                        "type": "string",
+                        "description": "ID of the user who has sent/removed the reaction on the Kommo side. Required field when entering a reaction by the user of Kommo"
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "Action type",
+                    "enum": [
+                      "react",
+                      "unreact"
+                    ]
+                  },
+                  "emoji": {
+                    "type": "string",
+                    "description": "Required field for the “react” type"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Message ID on the Kommo side. The field is required if the msgid field is not passed"
+                  },
+                  "msgid": {
+                    "type": "string",
+                    "description": "Message ID on the integration side. The field is required if the id field is not passed"
+                  },
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "ID of the user who has sent/removed the reaction on the integration side"
+                      },
+                      "ref_id": {
+                        "type": "string",
+                        "description": "ID of the user who has sent/removed the reaction on the Kommo side. Required field when entering a reaction by the user of Kommo"
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "Action type",
+                    "enum": [
+                      "react",
+                      "unreact"
+                    ]
+                  },
+                  "emoji": {
+                    "type": "string",
+                    "description": "Required field for the “react” type"
+                  }
+                }
+              }
+            },
+            "application/hal+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conversation_id": {
+                    "type": "string",
+                    "description": "Chat ID on the integration side"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Message ID on the Kommo side. The field is required if the msgid field is not passed"
+                  },
+                  "msgid": {
+                    "type": "string",
+                    "description": "Message ID on the integration side. The field is required if the id field is not passed"
+                  },
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "ID of the user who has sent/removed the reaction on the integration side"
+                      },
+                      "ref_id": {
+                        "type": "string",
+                        "description": "ID of the user who has sent/removed the reaction on the Kommo side. Required field when entering a reaction by the user of Kommo"
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "Action type",
+                    "enum": [
+                      "react",
+                      "unreact"
+                    ]
+                  },
+                  "emoji": {
+                    "type": "string",
+                    "description": "Required field for the “react” type"
+                  }
+                }
+              },
+              "examples": {
+                "Request Example": {
+                  "value": {
+                    "conversation_id": "my_integration-8e3e7640-49af-4448-a2c6-d5a421f7f217",
+                    "msgid": "XXXXXXX-0c4b-11ea-8d71-362b9e155667",
+                    "user": {
+                      "id": "XXXXXX-1376265f-86df-4c49-a0c3-a4816df41af8"
+                    },
+                    "type": "react",
+                    "emoji": "😍"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Reaction is accepted for the processing": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Incorrect data was given. Details are available in the response.": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "The request signature is incorrect": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Message doesn’t exist": {
+                    "value": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": {
+    "headers": []
+  },
+  "x-readme-fauxas": true
+}
